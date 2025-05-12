@@ -14,16 +14,26 @@ import { toast } from "sonner"
 import { handleTokenExpiration, isTokenError } from "@/utils/auth-utils"
 import { ArrowRight } from "lucide-react"
 import { getApiUrl } from "@/utils/config"
+import { useSelector } from "react-redux"
+import { selectAccessToken } from "@/lib/features/authSlice"
+
+const steps = [
+  { label: "Content Types", endpoint: "content-types", field: "content_types" },
+  { label: "Posting Goals", endpoint: "posting-goals", field: "posting_goals" },
+  { label: "Writing Styles", endpoint: "writing-styles", field: "writing_styles" },
+  { label: "Industries", endpoint: "industries", field: "industries" },
+  { label: "Job Descriptions", endpoint: "job-descriptions", field: "job_descriptions" },
+]
 
 export default function Home() {
   const [showStepper, setShowStepper] = useState(false)
   const [showTitleDialog, setShowTitleDialog] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const token = useSelector(selectAccessToken)
 
   const handleGenerateClick = async () => {
     try {
       setIsLoading(true)
-      const token = localStorage.getItem("access_token")
 
       // Check if user is logged in
       if (!token) {
@@ -51,8 +61,17 @@ export default function Home() {
 
       const data = await res.json()
 
-      const hasPrefs = Object.values(data).some((arr) => Array.isArray(arr) && arr.length > 0)
-      if (hasPrefs) {
+      // Check if any selections exist for any step (excluding custom)
+      let hasPreferences = false
+      for (const step of steps) {
+        const values = data[step.field]
+        if (values && values.length > 0) {
+          hasPreferences = true
+          break
+        }
+      }
+
+      if (hasPreferences) {
         setShowTitleDialog(true)
       } else {
         setShowStepper(true)
