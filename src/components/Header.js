@@ -56,10 +56,10 @@ export default function Header() {
   }, [dropdownOpen])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (token) {
       checkPreferencesOnLogin()
     }
-  }, [isAuthenticated])
+  }, [token, checkPreferencesOnLogin])
 
   const checkPreferencesOnLogin = async () => {
     try {

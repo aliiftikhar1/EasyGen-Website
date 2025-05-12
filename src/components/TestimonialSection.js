@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { MessageCircle, ChevronLeft, ChevronRight, Quote } from "lucide-react"
 import Image from "next/image"
 
@@ -73,10 +73,10 @@ export default function TestimonialSection() {
     scrollToIndex(currentIndex - 1)
   }
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : maxIndex))
     scrollToIndex(currentIndex + 1)
-  }
+  }, [currentIndex, maxIndex, scrollToIndex])
 
   const scrollToIndex = (index) => {
     if (carouselRef.current && index >= 0 && index <= maxIndex) {
@@ -161,7 +161,7 @@ export default function TestimonialSection() {
                       </div>
                       <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4"></div>
                     </div>
-                    <p className="text-sm sm:text-base text-gray-700 flex-grow">"{testimonial.message}"</p>
+                    <p className="text-sm sm:text-base text-gray-700 flex-grow">&quot;{testimonial.message}&quot;</p>
                     <div className="mt-6 flex items-center">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (

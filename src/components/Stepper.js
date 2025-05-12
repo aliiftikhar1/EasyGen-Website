@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -70,60 +70,40 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
     onOpenChange(false)
   }
 
-  useEffect(() => {
-    if (open) {
-      fetchPreferences()
-    }
-  }, [open, fetchPreferences])
-
-  const fetchPreferences = async () => {
+  const fetchPreferences = useCallback(async () => {
     try {
-      setIsLoading(true)
       const headers = getHeaders()
-
-      // Fetch user preferences
-      const prefRes = await axios.get(getApiUrl("/api/user-preferences/"), { headers })
-      setFineTuneDescription(prefRes.data.fine_tune_description || "")
-      setModifyPostCTA(prefRes.data.modify_post_cta || "")
-
-      // Fetch user preference selections
       const selectionRes = await axios.get(getApiUrl("/api/user-preference-selections/mine/"), { headers })
+      const prefRes = await axios.get(getApiUrl("/api/user-preferences/"), { headers })
 
-      const initial = {}
-      let hasSelections = false
-
-      steps.slice(0, 5).forEach((step) => {
-        // Only process the first 5 steps (excluding custom)
-        const values = selectionRes.data[step.field]
-        if (values?.length > 0) {
-          initial[step.endpoint] = values.map((item) => item.id)
-          hasSelections = true
-        } else {
-          initial[step.endpoint] = []
-        }
-      })
-
-      setSelections(initial)
-      setIsEditMode(hasSelections)
-    } catch (err) {
-      console.warn("Preference fetch error:", err)
-
-      // Check if the error is due to token expiration
-      if (
-        err.response?.data?.code === "token_not_valid" ||
-        err.response?.data?.detail?.includes("token") ||
-        err.response?.status === 401
-      ) {
-        handleTokenExpiration()
-        return
+      if (selectionRes.data.length > 0) {
+        const selections = selectionRes.data[0]
+        setSelections({
+          content_types: selections.content_types || [],
+          platforms: selections.platforms || [],
+          tones: selections.tones || [],
+          target_audiences: selections.target_audiences || [],
+          languages: selections.languages || [],
+          lengths: selections.lengths || [],
+        })
       }
 
-      setError("Failed to load preferences. Please try again.")
-    } finally {
-      await loadOptionsForStep(0)
-      setIsLoading(false)
+      if (prefRes.data.length > 0) {
+        const preferences = prefRes.data[0]
+        setFineTuneDescription(preferences.fine_tune_description || "")
+        setModifyPostCTA(preferences.modify_post_cta || "")
+      }
+    } catch (error) {
+      console.error("Error fetching preferences:", error)
+      if (isTokenError(error)) {
+        handleTokenExpiration()
+      }
     }
-  }
+  }, [getHeaders, handleTokenExpiration])
+
+  useEffect(() => {
+    fetchPreferences()
+  }, [fetchPreferences])
 
   const loadOptionsForStep = async (stepIndex) => {
     const { endpoint } = steps[stepIndex]
