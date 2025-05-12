@@ -65,13 +65,13 @@ export default function FAQSection() {
               Frequently Asked Questions
             </h2>
             <p className="text-gray-600 text-lg">
-              Still curious? We've got you covered with answers to the most common questions.
+              Still curious? We&apos;ve got you covered with answers to the most common questions.
             </p>
             
             <div className="mt-8 p-6 bg-white rounded-2xl shadow-lg border border-blue-50">
               <h3 className="text-lg font-black text-gray-900 mb-2">Need more help?</h3>
               <p className="text-gray-600 mb-4">
-                Can't find what you're looking for? Reach out to our support team.
+                Can&apos;t find what you&apos;re looking for? Reach out to our support team.
               </p>
               <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full">
                 Contact Support
