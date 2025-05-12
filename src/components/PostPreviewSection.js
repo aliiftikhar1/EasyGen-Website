@@ -19,6 +19,9 @@ export default function PostPreviewSection() {
             See how EasyGen upgrades your posts
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">From rough idea to polished content in seconds.</p>
+          <p className="text-gray-600">
+            Don&apos;t miss out on this opportunity to transform your content strategy.
+          </p>
         </div>
 
         <div

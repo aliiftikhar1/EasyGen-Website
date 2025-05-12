@@ -61,14 +61,9 @@ export default function TestimonialSection() {
 
   // Auto-scroll functionality
   useEffect(() => {
-    if (!isAutoPlaying) return
-
-    const interval = setInterval(() => {
-      handleNext()
-    }, 5000)
-
+    const interval = setInterval(handleNext, 5000)
     return () => clearInterval(interval)
-  }, [isAutoPlaying, currentIndex])
+  }, [handleNext])
 
   const itemsPerView = isMobile ? 1 : 3
   const maxIndex = Math.max(0, testimonials.length - itemsPerView)

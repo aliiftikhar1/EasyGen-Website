@@ -371,6 +371,10 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
                 </Button>
               </div>
             </div>
+
+            <p className="text-sm text-gray-500">
+              Don&apos;t worry, you can always edit this later.
+            </p>
           </>
         )}
       </DialogContent>

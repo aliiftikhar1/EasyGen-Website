@@ -74,7 +74,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
     if (open) {
       fetchPreferences()
     }
-  }, [open])
+  }, [open, fetchPreferences])
 
   const fetchPreferences = async () => {
     try {
@@ -244,8 +244,8 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
                 className="mt-1 bg-white resize-y min-h-[100px]"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Example: "I prefer a conversational tone with occasional humor. I work in tech marketing and want to
-                sound knowledgeable but approachable."
+                Example: &quot;I prefer a conversational tone with occasional humor. I work in tech marketing and want to
+                sound knowledgeable but approachable.&quot;
               </p>
             </div>
 
@@ -261,8 +261,8 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
                 className="mt-1 bg-white resize-y"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Example: "End posts with a question to encourage comments. Occasionally ask for shares if the content is
-                valuable."
+                Example: &quot;End posts with a question to encourage comments. Occasionally ask for shares if the content is
+                valuable.&quot;
               </p>
             </div>
           </div>
