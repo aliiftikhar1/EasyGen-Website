@@ -50,12 +50,12 @@ export default function FooterSection() {
   return (
     <footer className="relative overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900"></div>
+      <div className="absolute inset-0 bg-black"></div>
 
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-30"></div>
-      <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-indigo-600/10 rounded-full blur-3xl transform -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-1/4 w-1/2 h-1/2 bg-purple-600/10 rounded-full blur-3xl transform translate-y-1/2"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30"></div>
+      <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-blue-600/10 rounded-full blur-3xl transform -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-1/4 w-1/2 h-1/2 bg-blue-600/10 rounded-full blur-3xl transform translate-y-1/2"></div>
 
       <div className="relative max-w-7xl mx-auto pt-20 pb-12 px-6 md:px-10 lg:px-8">
         {/* Top section with logo and newsletter */}
@@ -158,7 +158,7 @@ export default function FooterSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 pb-16 border-b border-gray-700/50">
           <div className="bg-gray-800/30 rounded-xl p-6 backdrop-blur-sm border border-gray-700/30 hover:border-gray-600/50 transition-all duration-300">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
                 <Mail className="h-5 w-5" />
               </div>
               <div>
@@ -166,7 +166,7 @@ export default function FooterSection() {
                 <p className="text-gray-400 mb-3">For general inquiries and support</p>
                 <a
                   href="mailto:hello@easygenai.com"
-                  className="text-indigo-400 hover:text-indigo-300 transition-colors duration-300"
+                  className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
                 >
                   hello@easygenai.com
                 </a>
@@ -176,13 +176,13 @@ export default function FooterSection() {
 
           <div className="bg-gray-800/30 rounded-xl p-6 backdrop-blur-sm border border-gray-700/30 hover:border-gray-600/50 transition-all duration-300">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
                 <MessageSquare className="h-5 w-5" />
               </div>
               <div>
                 <h4 className="text-white font-semibold mb-2">Live Chat</h4>
                 <p className="text-gray-400 mb-3">We're online Monday to Friday, 9am-5pm ET</p>
-                <button className="text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                <button className="text-blue-400 hover:text-blue-300 transition-colors duration-300">
                   Start a conversation
                 </button>
               </div>

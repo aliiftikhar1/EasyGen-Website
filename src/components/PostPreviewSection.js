@@ -15,14 +15,14 @@ export default function PostPreviewSection() {
 
       <div className="max-w-6xl mx-auto relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 p-3 bg-clip-text text-transparent bg-gradient-to-t from-blue-600 to-blue-700">
             See how EasyGen upgrades your posts
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">From rough idea to polished content in seconds.</p>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">From rough idea to polished content in seconds.</p>
         </div>
 
         <div
-          className="relative rounded-2xl overflow-hidden transition-all duration-500 shadow-lg hover:shadow-2xl border border-gray-200/50 bg-white backdrop-blur-sm"
+          className="relative rounded-2xl overflow-hidden transition-all duration-500 shadow-lg hover:shadow-2xl border border-gray-400/50 bg-white backdrop-blur-sm"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -34,13 +34,13 @@ export default function PostPreviewSection() {
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 mr-3">
                   <Eye className="h-5 w-5 text-gray-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800">Your Original Draft</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Your Original Draft</h3>
               </div>
 
               <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4 opacity-70"></div>
 
               <div className="bg-gray-50/80 rounded-xl p-6 backdrop-blur-sm">
-                <p className="text-left text-gray-700 leading-relaxed">
+                <p className="text-left text-sm sm:text-base text-gray-700 leading-relaxed">
                   Launching our new tool today. It helps with LinkedIn writing. Give it a try and let us know what you
                   think!
                 </p>
@@ -48,13 +48,13 @@ export default function PostPreviewSection() {
             </div>
 
             <div
-              className={`p-8 md:p-10 transition-all duration-500 ${isHovered ? "bg-gradient-to-br from-blue-50/50 to-purple-50/50" : ""}`}
+              className={`p-8 md:p-10 transition-all duration-500 ${isHovered ? "bg-gradient-to-br from-blue-50/50 to-blue-50/50" : ""}`}
             >
               <div className="flex items-center mb-4">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-50 mr-3">
                   <Sparkles className="h-5 w-5 text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800">Enhanced with EasyGen</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800">Enhanced with EasyGen</h3>
               </div>
 
               <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4 opacity-70"></div>
@@ -62,7 +62,7 @@ export default function PostPreviewSection() {
               <div
                 className={`bg-white rounded-xl p-6 shadow-sm transition-all duration-500 ${isHovered ? "shadow-md -translate-y-1" : ""}`}
               >
-                <p className="text-left text-gray-800 leading-relaxed">
+                <p className="text-left text-sm sm:text-base text-gray-800 leading-relaxed">
                   <span className="text-blue-600 font-bold">🚀</span> Just launched a tool that helps you write viral
                   LinkedIn posts in seconds.
                   <br />
@@ -89,7 +89,7 @@ export default function PostPreviewSection() {
         </div>
 
         <div className="mt-10 text-center">
-          <button className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
+          <button className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2">
             Try EasyGen Now
           </button>
         </div>

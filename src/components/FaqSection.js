@@ -58,22 +58,22 @@ export default function FAQSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left column - Heading */}
           <div className="lg:col-span-4 lg:sticky lg:top-8">
-            <div className="inline-block px-4 py-1 bg-indigo-50 rounded-full text-indigo-600 font-medium text-sm mb-6">
+            <div className="inline-block px-4 py-1 bg-blue-50 rounded-full text-blue-600 font-medium text-sm mb-6">
               Got Questions?
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-600">
               Frequently Asked Questions
             </h2>
             <p className="text-gray-600 text-lg">
               Still curious? We've got you covered with answers to the most common questions.
             </p>
             
-            <div className="mt-8 p-6 bg-white rounded-2xl shadow-lg border border-indigo-50">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Need more help?</h3>
+            <div className="mt-8 p-6 bg-white rounded-2xl shadow-lg border border-blue-50">
+              <h3 className="text-lg font-black text-gray-900 mb-2">Need more help?</h3>
               <p className="text-gray-600 mb-4">
                 Can't find what you're looking for? Reach out to our support team.
               </p>
-              <button className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full">
+              <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full">
                 Contact Support
               </button>
             </div>

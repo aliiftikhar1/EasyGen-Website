@@ -253,15 +253,15 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
   const renderCustomPreferencesStep = () => {
     return (
       <div className="space-y-6">
-        <div className="space-y-4 mb-6 bg-gradient-to-r from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100">
-          <h3 className="text-lg font-semibold text-indigo-800">Personalize Your Content</h3>
+        <div className="space-y-4 mb-6 bg-gradient-to-r from-blue-50/80 to-blue-50/80 p-6 rounded-xl border border-blue-100">
+          <h3 className="text-lg font-semibold text-blue-800">Personalize Your Content</h3>
           <p className="text-gray-600 text-sm mb-4">
             These custom preferences help us tailor your content to your specific needs and style.
           </p>
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="fine-tune-description" className="text-indigo-700 font-medium">
+              <Label htmlFor="fine-tune-description" className="text-blue-700 font-medium">
                 Fine Tune Description
               </Label>
               <Textarea
@@ -278,7 +278,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
             </div>
 
             <div>
-              <Label htmlFor="modify-post-cta" className="text-indigo-700 font-medium">
+              <Label htmlFor="modify-post-cta" className="text-blue-700 font-medium">
                 Modify Post CTA
               </Label>
               <Textarea
@@ -303,7 +303,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[50vw] max-w-[60vw]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
             {isEditMode ? "Update Your Preferences" : "Set Your Preferences"}
           </DialogTitle>
           <DialogDescription>
@@ -341,7 +341,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
             <div className="space-y-2  max-h-[300px] overflow-y-auto p-2 grid grid-cols-2 ">
               {isLoading && currentStep === 0 ? (
                 <div className="flex justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
               ) : items.length === 0 ? (
                 <div className="text-gray-500 text-center py-4">No options available</div>
@@ -355,7 +355,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
                       id={`${current.endpoint}-${item.id}`}
                       checked={selections[current.endpoint]?.includes(item.id) || false}
                       onCheckedChange={() => toggleSelection(current.endpoint, item.id)}
-                      className="text-indigo-600 border-gray-300 w-5 h-5"
+                      className="text-blue-600 border-gray-300 w-5 h-5"
                     />
                     <Label htmlFor={`${current.endpoint}-${item.id}`} className="text-lg cursor-pointer w-full">
                       {item.name}
@@ -380,7 +380,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
             <Button
               onClick={handleNext}
               disabled={isLoading}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-6"
+              className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 px-6"
             >
               Next
             </Button>
@@ -388,7 +388,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
             <Button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-6"
+              className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 px-6"
             >
               {isLoading ? (
                 <>

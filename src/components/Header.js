@@ -205,7 +205,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/50 backdrop-blur-md px-6 py-3 flex justify-between items-center border-b border-gray-100">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-600 flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -219,7 +219,7 @@ export default function Header() {
             <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
           </svg>
         </div>
-        <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
           EasyGen
         </h1>
       </div>
@@ -227,17 +227,17 @@ export default function Header() {
       <div className="hidden md:flex gap-10 font-semibold text-gray-500">
         <Link href="#" className="group relative">
           Community Flows
-          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
         </Link>
 
         <Link href="#" className="group relative">
           Hints & Tips
-          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
         </Link>
 
         <Link href="#" className="group relative">
           Discord
-          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+          <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
         </Link>
       </div>
 
@@ -245,7 +245,7 @@ export default function Header() {
         {user ? (
           <div className="relative" ref={dropdownRef}>
             <button
-              className="w-10 h-10 bg-indigo-600 text-white rounded-full font-semibold text-sm flex items-center justify-center hover:bg-indigo-700"
+              className="w-10 h-10 bg-blue-600 text-white rounded-full font-semibold text-sm flex items-center justify-center hover:bg-blue-700"
               onClick={() => setDropdownOpen((prev) => !prev)}
             >
               {user.full_name?.[0] || "U"}
@@ -312,13 +312,13 @@ export default function Header() {
             <Dialog open={profileDialogOpen} onOpenChange={setProfileDialogOpen}>
               <DialogContent className="bg-white rounded-xl">
                 <DialogHeader>
-                  <DialogTitle className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
                     User Profile
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                   <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                       {user.full_name?.[0] || "U"}
                     </div>
                   </div>
@@ -347,18 +347,18 @@ export default function Header() {
         ) : (
           <div className="flex gap-3">
             {/* Login Dialog */}
-            <Dialog open={activeDialog === "login"} onOpenChange={(open) => setActiveDialog(open ? "login" : null)}>
+            <Dialog open={activeDialog === "login"} onOpenChange={(open) => setActiveDialog(open ? "login" : null)} >
               <DialogTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="group flex items-center gap-1.5 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50/50"
+                  className="group flex items-center gap-1.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
                 >
                   <LogIn className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   <span>Login</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="backdrop-blur-xl bg-white/90 border border-gray-200/80 shadow-2xl rounded-2xl overflow-hidden p-0 max-w-md">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 -z-10" />
+              <DialogContent className="backdrop-blur-xl bg-white/90 border border-gray-200/80 shadow-2xl rounded-2xl overflow-hidden p-0 md:max-w-md">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-blue-50/50 -z-10" />
 
                 {/* Close button */}
                 <button
@@ -368,20 +368,14 @@ export default function Header() {
                   <X size={16} />
                 </button>
 
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
-
+                <div className="bg-gradient-to-r from-blue-600 to-blue-600 p-3 relative overflow-hidden">
                   <DialogHeader>
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-3 mb-0">
                       <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <LogIn className="w-5 h-5 text-white" />
                       </div>
-                      <DialogTitle className="text-white text-2xl font-semibold">Welcome back</DialogTitle>
+                      <DialogTitle className="text-white text-2xl font-black">Login</DialogTitle>
                     </div>
-                    <p className="text-indigo-100 mt-1">
-                      Login to access your account and continue creating amazing content
-                    </p>
                   </DialogHeader>
                 </div>
 
@@ -390,7 +384,7 @@ export default function Header() {
                     e.preventDefault()
                     handleAuth("login")
                   }}
-                  className="space-y-6 p-8"
+                  className="space-y-6 p-4"
                 >
                   <div className="space-y-2">
                     <Label htmlFor="login-email" className="text-gray-700 font-medium">
@@ -438,19 +432,19 @@ export default function Header() {
 
                   <Button
                     type="submit"
-                    className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-indigo-500/30 transition-all rounded-xl text-base font-medium"
+                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-blue-500/30 transition-all rounded-xl text-base font-medium"
                   >
                     <span>Continue</span>
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
 
-                  <div className="relative flex items-center gap-3 my-6">
+                  <div className="relative flex items-center gap-3 my-2">
                     <div className="h-px flex-grow bg-gray-200"></div>
                     <span className="text-sm text-gray-500 font-medium">OR</span>
                     <div className="h-px flex-grow bg-gray-200"></div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
                       className="flex items-center justify-center gap-2 h-12 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium"
@@ -484,7 +478,7 @@ export default function Header() {
                       </svg>
                       <span>Apple</span>
                     </button>
-                  </div>
+                  </div> */}
 
                   <div className="text-center text-sm text-gray-600">
                     Don't have an account?{" "}
@@ -503,13 +497,13 @@ export default function Header() {
             {/* Signup Dialog */}
             <Dialog open={activeDialog === "signup"} onOpenChange={(open) => setActiveDialog(open ? "signup" : null)}>
               <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-indigo-500/20 transition-all rounded-xl group">
+                <Button className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-md hover:shadow-blue-500/20 transition-all rounded-xl group">
                   <UserPlus className="w-4 h-4 mr-1.5 group-hover:scale-110 transition-transform" />
                   <span>Sign Up</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="backdrop-blur-xl bg-white/90 border border-gray-200/80 shadow-2xl rounded-2xl overflow-hidden p-0 max-w-md">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 -z-10" />
+              <DialogContent className="backdrop-blur-xl bg-white/90 border border-gray-200/80 shadow-2xl rounded-2xl overflow-hidden p-0 md:max-w-md">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-blue-50/50 -z-10" />
 
                 {/* Close button */}
                 <button
@@ -519,20 +513,14 @@ export default function Header() {
                   <X size={16} />
                 </button>
 
-                <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
-
+                <div className="bg-gradient-to-r from-blue-600 to-blue-600 p-3 relative overflow-hidden">
                   <DialogHeader>
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-3 mb-0">
                       <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                         <Sparkles className="w-5 h-5 text-white" />
                       </div>
-                      <DialogTitle className="text-white text-2xl font-semibold">Get started</DialogTitle>
+                      <DialogTitle className="text-white text-2xl font-semibold">Create an account</DialogTitle>
                     </div>
-                    <p className="text-indigo-100 mt-1">
-                      Create your free account and start generating amazing content
-                    </p>
                   </DialogHeader>
                 </div>
 
@@ -541,7 +529,7 @@ export default function Header() {
                     e.preventDefault()
                     handleAuth("signup")
                   }}
-                  className="space-y-5 p-8"
+                  className="space-y-2 p-6 grid grid-cols-2 gap-2"
                 >
                   <div className="space-y-2">
                     <Label htmlFor="signup-name" className="text-gray-700 font-medium">
@@ -668,7 +656,7 @@ export default function Header() {
                     )}
                   </div>
 
-                  <div className="flex items-start gap-2 mt-4">
+                  <div className="flex items-start gap-2 mt-4 col-span-2">
                     <div className="flex items-center h-5 mt-1">
                       <input
                         id="terms"
@@ -677,7 +665,7 @@ export default function Header() {
                         className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
                       />
                     </div>
-                    <Label htmlFor="terms" className="text-sm text-gray-600">
+                    <Label htmlFor="terms" className="flex flex-wrap text-sm text-gray-600">
                       I agree to the{" "}
                       <a href="#" className="text-indigo-600 hover:text-indigo-800 font-medium">
                         Terms of Service
@@ -691,19 +679,19 @@ export default function Header() {
 
                   <Button
                     type="submit"
-                    className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-indigo-500/30 transition-all rounded-xl text-base font-medium group"
+                    className="w-full h-12 col-span-2 bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-blue-500/30 transition-all rounded-xl text-base font-medium group"
                   >
                     <span>Create Account</span>
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
 
-                  <div className="relative flex items-center gap-3 my-4">
+                  <div className="relative flex items-center gap-3 my-2 col-span-2">
                     <div className="h-px flex-grow bg-gray-200"></div>
                     <span className="text-sm text-gray-500 font-medium">OR</span>
                     <div className="h-px flex-grow bg-gray-200"></div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* <div className="grid grid-cols-2 gap-4 col-span-2">
                     <button
                       type="button"
                       className="flex items-center justify-center gap-2 h-12 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-gray-700 font-medium"
@@ -737,9 +725,9 @@ export default function Header() {
                       </svg>
                       <span>Apple</span>
                     </button>
-                  </div>
+                  </div> */}
 
-                  <div className="text-center text-sm text-gray-600">
+                  <div className="text-center text-sm text-gray-600 col-span-2">
                     Already have an account?{" "}
                     <button
                       type="button"

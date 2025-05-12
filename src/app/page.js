@@ -9,9 +9,10 @@ import PostPreviewSection from "@/components/PostPreviewSection"
 import ImpactBanner from "@/components/ImpactBanner"
 import TestimonialsSection from "@/components/TestimonialSection"
 import FAQSection from "@/components/FaqSection"
-import FooterSection from "@/components/FeaturesSection"
+import FooterSection from "@/components/FooterSection"
 import { toast } from "sonner"
 import { handleTokenExpiration, isTokenError } from "@/utils/auth-utils"
+import { ArrowRight } from "lucide-react"
 
 export default function Home() {
   const [showStepper, setShowStepper] = useState(false)
@@ -82,10 +83,10 @@ export default function Home() {
       <Header />
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Find High-Potential <br /> Customers with <span className="text-teal-800">Trustco.</span>
+          <h1 className="text-4xl md:text-[56px] font-black tracking-tight mb-4">
+            Find High-Potential <br /> Customers with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-600">EasyGen.</span>
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8 text-[16px]">
             We provide sales teams and professionals with the knowledge, skill and discipline they need to be 10x more
             successful.
           </p>
@@ -93,7 +94,7 @@ export default function Home() {
             variant="secondary"
             onClick={handleGenerateClick}
             disabled={isLoading}
-            className="flex capitalize text-lg border border-gray-600 items-center mx-auto"
+            className="flex capitalize p-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-[20rem] text-[18px] border border-gray-600 items-center mx-auto"
           >
             {isLoading ? (
               <>
@@ -103,18 +104,7 @@ export default function Home() {
             ) : (
               <>
                 Generate viral post
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 ml-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <ArrowRight className="ml-2 size-6" />
               </>
             )}
           </Button>

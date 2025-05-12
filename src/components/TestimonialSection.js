@@ -103,26 +103,26 @@ export default function TestimonialsSection() {
     <section className="relative py-24 px-6 overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white"></div>
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-purple-50/50 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-indigo-50/50 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-50/50 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-blue-50/50 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 opacity-10">
-        <Quote className="h-24 w-24 text-indigo-300 transform -rotate-12" />
+        <Quote className="h-24 w-24 text-blue-300 transform -rotate-12" />
       </div>
       <div className="absolute bottom-20 right-10 opacity-10">
-        <Quote className="h-16 w-16 text-purple-300 transform rotate-12" />
+        <Quote className="h-16 w-16 text-blue-300 transform rotate-12" />
       </div>
 
       <div className="max-w-7xl mx-auto relative">
         <div className="text-center mb-12">
-          <div className="inline-block px-4 py-1 bg-indigo-50 rounded-full text-indigo-600 font-medium text-sm mb-6">
+          <div className="inline-block px-4 py-1 bg-indigo-50 rounded-full text-indigo-600 font-medium text-xs sm:text-sm mb-6">
             Customer Testimonials
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 p-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600">
             What creators love about EasyGen
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
             Real stories from professionals who post smarter with AI.
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function TestimonialsSection() {
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-4">
-                          <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-indigo-100 to-purple-100">
+                          <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-indigo-100 to-blue-100">
                             <Image
                               src={testimonial.avatar || "/placeholder.svg"}
                               alt={testimonial.name}
@@ -159,15 +159,15 @@ export default function TestimonialsSection() {
                             />
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                            <p className="text-sm text-gray-500">{testimonial.role}</p>
+                            <h4 className="font-bold text-gray-900 text-sm sm:text-base">{testimonial.name}</h4>
+                            <p className="text-xs sm:text-sm text-gray-500">{testimonial.role}</p>
                           </div>
                         </div>
                         <MessageCircle className="h-5 w-5 text-indigo-400" />
                       </div>
                       <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4"></div>
                     </div>
-                    <p className="text-gray-700 flex-grow">"{testimonial.message}"</p>
+                    <p className="text-sm sm:text-base text-gray-700 flex-grow">"{testimonial.message}"</p>
                     <div className="mt-6 flex items-center">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => (
