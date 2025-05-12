@@ -496,7 +496,7 @@ export default function Header() {
                   </div> */}
 
                   <div className="text-center text-sm text-gray-600">
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <button
                       type="button"
                       onClick={() => setActiveDialog("signup")}

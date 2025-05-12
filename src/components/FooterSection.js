@@ -229,7 +229,7 @@ export default function FooterSection() {
               </div>
               <div>
                 <h4 className="text-white font-semibold mb-2">Live Chat</h4>
-                <p className="text-gray-400 mb-3">We're online Monday to Friday, 9am-5pm ET</p>
+                <p className="text-gray-400 mb-3">We&apos;re online Monday to Friday, 9am-5pm ET</p>
                 <button className="text-blue-400 hover:text-blue-300 transition-colors duration-300">
                   Start a conversation
                 </button>

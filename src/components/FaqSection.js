@@ -137,6 +137,13 @@ export default function FAQSection() {
                 .
               </p>
             </div> */}
+
+            <p className="text-gray-600">
+              Don&apos;t miss out on this opportunity to transform your content strategy.
+            </p>
+            <p className="text-gray-600">
+              We&apos;re here to help you grow your LinkedIn presence.
+            </p>
           </div>
         </div>
       </div>
