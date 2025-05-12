@@ -3,23 +3,25 @@
  */
 
 import { toast } from "sonner"
+import { store } from "@/lib/store"
+import { logout } from "@/lib/features/authSlice"
 
 /**
  * Handles token expiration by clearing user data and showing a notification
  */
 export const handleTokenExpiration = () => {
-  // Clear user data from localStorage
-  localStorage.removeItem("access_token")
-  localStorage.removeItem("refresh_token")
-  localStorage.removeItem("user")
+  if (typeof window !== "undefined") {
+    // Dispatch logout action
+    store.dispatch(logout())
 
-  // Show toast notification
-  toast.error("Your session has expired. Please log in again.")
+    // Show toast notification
+    toast.error("Your session has expired. Please log in again.")
 
-  // Force page reload to update UI state
-  setTimeout(() => {
-    window.location.reload()
-  }, 1500)
+    // Force page reload to update UI state
+    setTimeout(() => {
+      window.location.reload()
+    }, 1500)
+  }
 }
 
 /**
@@ -56,7 +58,18 @@ export const setupAxiosInterceptors = (axiosInstance) => {
 /**
  * Gets the authorization headers for API requests
  */
-export const getAuthHeaders = () => ({
-  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-  "Content-Type": "application/json",
-})
+export const getAuthHeaders = () => {
+  const state = store.getState()
+  const token = state.auth.accessToken
+
+  if (!token) {
+    return {
+      "Content-Type": "application/json",
+    }
+  }
+  
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  }
+}

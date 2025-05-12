@@ -13,6 +13,7 @@ import FooterSection from "@/components/FooterSection"
 import { toast } from "sonner"
 import { handleTokenExpiration, isTokenError } from "@/utils/auth-utils"
 import { ArrowRight } from "lucide-react"
+import { getApiUrl } from "@/utils/config"
 
 export default function Home() {
   const [showStepper, setShowStepper] = useState(false)
@@ -30,7 +31,7 @@ export default function Home() {
         return
       }
 
-      const res = await fetch("http://localhost:8000/api/user-preference-selections/mine/", {
+      const res = await fetch(getApiUrl("/api/user-preference-selections/mine/"), {
         headers: { Authorization: `Bearer ${token}` },
       })
 

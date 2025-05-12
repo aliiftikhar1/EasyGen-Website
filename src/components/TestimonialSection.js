@@ -8,8 +8,7 @@ const testimonials = [
   {
     name: "Sarah Thompson",
     role: "Career Coach",
-    message:
-      "EasyGen helped me go from silent to standout on LinkedIn. I now post twice a week and get real engagement!",
+    message: "EasyGen helped me go from silent to standout on LinkedIn. I now post twice a week and get real engagement!",
     avatar: "/image/user-image.jpg",
   },
   {
@@ -44,7 +43,7 @@ const testimonials = [
   },
 ]
 
-export default function TestimonialsSection() {
+export default function TestimonialSection() {
   const carouselRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
@@ -72,7 +71,7 @@ export default function TestimonialsSection() {
   }, [isAutoPlaying, currentIndex])
 
   const itemsPerView = isMobile ? 1 : 3
-  const maxIndex = testimonials.length - itemsPerView
+  const maxIndex = Math.max(0, testimonials.length - itemsPerView)
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : 0))
@@ -130,7 +129,7 @@ export default function TestimonialsSection() {
         <div className="relative mt-16">
           {/* Carousel container */}
           <div
-            className="relative "
+            className="relative"
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
           >
@@ -152,7 +151,7 @@ export default function TestimonialsSection() {
                         <div className="flex items-center gap-4">
                           <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-indigo-100 to-blue-100">
                             <Image
-                              src={testimonial.avatar || "/placeholder.svg"}
+                              src={testimonial.avatar}
                               alt={testimonial.name}
                               fill
                               className="object-cover"
@@ -183,41 +182,47 @@ export default function TestimonialsSection() {
             </div>
 
             {/* Navigation arrows */}
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className={`absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300 ${
-                currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-50"
-              }`}
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-6 w-6 text-indigo-600" />
-            </button>
+            {testimonials.length > itemsPerView && (
+              <>
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex === 0}
+                  className={`absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300 ${
+                    currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-50"
+                  }`}
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="h-6 w-6 text-indigo-600" />
+                </button>
 
-            <button
-              onClick={handleNext}
-              disabled={currentIndex >= maxIndex}
-              className={`absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300 ${
-                currentIndex >= maxIndex ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-50"
-              }`}
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-6 w-6 text-indigo-600" />
-            </button>
-          </div>
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex >= maxIndex}
+                  className={`absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center transition-all duration-300 ${
+                    currentIndex >= maxIndex ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-50"
+                  }`}
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="h-6 w-6 text-indigo-600" />
+                </button>
+              </>
+            )}
 
-          {/* Pagination dots */}
-          <div className="flex justify-center mt-8 gap-2">
-            {[...Array(maxIndex + 1)].map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleDotClick(idx)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  currentIndex === idx ? "bg-indigo-600 w-8" : "bg-gray-300 hover:bg-indigo-300"
-                }`}
-                aria-label={`Go to testimonial ${idx + 1}`}
-              />
-            ))}
+            {/* Pagination dots */}
+            {testimonials.length > itemsPerView && (
+              <div className="flex justify-center mt-8 gap-2">
+                {Array.from({ length: maxIndex + 1 }, (_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleDotClick(idx)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      currentIndex === idx ? "bg-indigo-600 w-8" : "bg-gray-300 hover:bg-indigo-300"
+                    }`}
+                    aria-label={`Go to testimonial ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

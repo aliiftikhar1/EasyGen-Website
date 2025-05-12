@@ -8,22 +8,35 @@ import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { Eye, EyeOff, ArrowRight, UserPlus, LogIn, CheckCircle2, X, Sparkles, Settings } from 'lucide-react'
 import Link from "next/link"
-import PreferenceStepper, { checkUserPreferences } from "./Stepper"
+import PreferenceStepper from "./Stepper"
+import { checkUserPreferences } from "@/utils/preferences"
+import { getApiUrl } from "@/utils/config"
+import { useDispatch, useSelector } from 'react-redux'
+import { setCredentials, logout, selectCurrentUser, selectIsAuthenticated, selectAccessToken, selectRefreshToken } from '@/lib/features/authSlice'
 
 export default function Header() {
+  const dispatch = useDispatch()
+  const user = useSelector(selectCurrentUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const token = useSelector(selectAccessToken)
+  const refreshToken = useSelector(selectRefreshToken)
   const [loginEmail, setLoginEmail] = useState("")
   const [loginPassword, setLoginPassword] = useState("")
   const [signupName, setSignupName] = useState("")
   const [signupEmail, setSignupEmail] = useState("")
   const [signupPassword, setSignupPassword] = useState("")
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("")
+  const [signupPhone, setSignupPhone] = useState("")
+  const [signupZipCode, setSignupZipCode] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [activeDialog, setActiveDialog] = useState(null)
-  const [user, setUser] = useState(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [profileDialogOpen, setProfileDialogOpen] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [showPreferences, setShowPreferences] = useState(false)
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
+  const [isSignupLoading, setIsSignupLoading] = useState(false)
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false)
   const dropdownRef = useRef(null)
 
   useEffect(() => {
@@ -43,16 +56,14 @@ export default function Header() {
   }, [dropdownOpen])
 
   useEffect(() => {
-    const userData = localStorage.getItem("user")
-    if (userData) {
-      setUser(JSON.parse(userData))
+    if (isAuthenticated) {
       checkPreferencesOnLogin()
     }
-  }, [])
+  }, [isAuthenticated])
 
   const checkPreferencesOnLogin = async () => {
     try {
-      const hasPreferences = await checkUserPreferences()
+      const hasPreferences = await checkUserPreferences(token)
       if (!hasPreferences) {
         // If user doesn't have preferences, show the preferences dialog
         setShowPreferences(true)
@@ -63,16 +74,8 @@ export default function Header() {
   }
 
   const handleTokenExpiration = () => {
-    // Clear user data from localStorage
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    localStorage.removeItem("user")
-    setUser(null)
-
-    // Show toast notification
+    dispatch(logout())
     toast.error("Your session has expired. Please log in again.")
-
-    // Close any open dialogs
     setActiveDialog(null)
     setProfileDialogOpen(false)
     setShowPreferences(false)
@@ -91,68 +94,39 @@ export default function Header() {
     setPasswordStrength(strength)
   }
 
-  const logout = async () => {
-    try {
-      const token = localStorage.getItem("access_token")
-      const refresh_token = localStorage.getItem("refresh_token")
-
-      await fetch("http://localhost:8000/auth/logout/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ refresh: refresh_token }),
-      })
-    } catch (err) {
-      console.error("Logout failed", err)
-
-      // If logout fails due to token issues, just clear local storage
-      if (err.response?.data?.code === "token_not_valid" ||
-        err.response?.data?.detail?.includes("token") ||
-        err.response?.status === 401) {
-        // We'll still proceed with local logout
-        console.warn("Token expired during logout attempt")
-      }
-    } finally {
-      localStorage.removeItem("access_token")
-      localStorage.removeItem("refresh_token")
-      localStorage.removeItem("user")
-      setUser(null)
-      toast.success("Logged out successfully")
-    }
-  }
-
   const handleAuth = async (type) => {
     try {
       if (type === "signup") {
+        setIsSignupLoading(true)
         if (signupPassword !== signupConfirmPassword) {
           return toast.error("Passwords do not match")
         }
 
-        const res = await fetch("http://localhost:8000/auth/signup/", {
+        const res = await fetch(getApiUrl("/auth/signup/"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             full_name: signupName,
             email: signupEmail,
-            phone_number: "0000000000",
-            zip_code: "00000",
+            phone_number: signupPhone,
+            zip_code: signupZipCode,
             password: signupPassword,
           }),
         })
 
         if (!res.ok) {
           const data = await res.json()
-          return toast.error(data?.detail || "Signup failed")
+          return toast.error(data?.detail || data?.message|| data?.phone_number || "Signup failed")
         }
 
-        toast.success("Account created successfully")
+        const data = await res.json()
+        toast.success(data?.message || "Account created successfully")
         setActiveDialog("login")
       }
 
       if (type === "login") {
-        const res = await fetch("http://localhost:8000/auth/login/", {
+        setIsLoginLoading(true)
+        const res = await fetch(getApiUrl("/auth/login/"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -164,13 +138,11 @@ export default function Header() {
         const data = await res.json()
 
         if (!res.ok) {
-          return toast.error(data?.detail || "Login failed")
+          return toast.error(data?.detail || data?.message || "Login failed")
         }
 
-        localStorage.setItem("access_token", data.access)
-        localStorage.setItem("refresh_token", data.refresh)
-        localStorage.setItem("user", JSON.stringify(data.user))
-        setUser(data.user)
+        // Dispatch login action
+        dispatch(setCredentials(data))
 
         toast.success("Logged in successfully")
         setActiveDialog(null)
@@ -181,24 +153,47 @@ export default function Header() {
         }, 500)
       }
 
+      // Reset form fields
       setLoginEmail("")
       setLoginPassword("")
       setSignupName("")
       setSignupEmail("")
       setSignupPassword("")
       setSignupConfirmPassword("")
+      setSignupPhone("")
+      setSignupZipCode("")
     } catch (error) {
       console.error("Auth error:", error)
 
-      // Check if the error is due to token expiration
-      if (error.response?.data?.code === "token_not_valid" ||
-        error.response?.data?.detail?.includes("token") ||
-        error.response?.status === 401) {
+      if (isTokenError(error)) {
         handleTokenExpiration()
         return
       }
 
       toast.error("Something went wrong")
+    } finally {
+      setIsLoginLoading(false)
+      setIsSignupLoading(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      setIsLogoutLoading(true)
+      await fetch(getApiUrl("/auth/logout/"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      })
+    } catch (err) {
+      console.error("Logout failed", err)
+    } finally {
+      dispatch(logout())
+      toast.success("Logged out successfully")
+      setIsLogoutLoading(false)
     }
   }
 
@@ -287,23 +282,33 @@ export default function Header() {
                 <div className="border-t border-gray-200 my-1"></div>
                 <button
                   className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-600 flex items-center gap-2"
-                  onClick={logout}
+                  onClick={handleLogout}
+                  disabled={isLogoutLoading}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
-                  Logout
+                  {isLogoutLoading ? (
+                    <>
+                      <span className="animate-spin mr-2">⟳</span>
+                      Logging out...
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      Logout
+                    </>
+                  )}
                 </button>
               </div>
             )}
@@ -433,9 +438,19 @@ export default function Header() {
                   <Button
                     type="submit"
                     className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-blue-500/30 transition-all rounded-xl text-base font-medium"
+                    disabled={isLoginLoading}
                   >
-                    <span>Continue</span>
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    {isLoginLoading ? (
+                      <>
+                        <span className="animate-spin mr-2">⟳</span>
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        <span>Continue</span>
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
 
                   <div className="relative flex items-center gap-3 my-2">
@@ -562,6 +577,36 @@ export default function Header() {
                   </div>
 
                   <div className="space-y-2">
+                    <Label htmlFor="signup-phone" className="text-gray-700 font-medium">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="signup-phone"
+                      type="tel"
+                      value={signupPhone}
+                      onChange={(e) => setSignupPhone(e.target.value)}
+                      required
+                      className="bg-white/90 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 h-12 rounded-xl"
+                      placeholder="(123) 456-7890"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-zipcode" className="text-gray-700 font-medium">
+                      ZIP Code
+                    </Label>
+                    <Input
+                      id="signup-zipcode"
+                      type="text"
+                      value={signupZipCode}
+                      onChange={(e) => setSignupZipCode(e.target.value)}
+                      required
+                      className="bg-white/90 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 h-12 rounded-xl"
+                      placeholder="12345"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="signup-password" className="text-gray-700 font-medium">
                       Password
                     </Label>
@@ -680,9 +725,19 @@ export default function Header() {
                   <Button
                     type="submit"
                     className="w-full h-12 col-span-2 bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-blue-500/30 transition-all rounded-xl text-base font-medium group"
+                    disabled={isSignupLoading}
                   >
-                    <span>Create Account</span>
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    {isSignupLoading ? (
+                      <>
+                        <span className="animate-spin mr-2">⟳</span>
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        <span>Create Account</span>
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
 
                   <div className="relative flex items-center gap-3 my-2 col-span-2">

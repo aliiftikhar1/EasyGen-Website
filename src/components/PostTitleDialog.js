@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Sparkles, ArrowRight, RefreshCw, Copy, Check, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { handleTokenExpiration, isTokenError } from "@/utils/auth-utils"
+import { getApiUrl } from "@/utils/config"
 
 // Example title suggestions
 const EXAMPLE_TITLES = [
@@ -43,7 +44,7 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
         return
       }
 
-      const response = await fetch("http://localhost:8000/api/generate-linkedin-post/", {
+      const response = await fetch(getApiUrl("/api/generate-linkedin-post/"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +98,7 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
         return
       }
 
-      const response = await fetch("http://localhost:8000/api/generate-linkedin-post/", {
+      const response = await fetch(getApiUrl("/api/generate-linkedin-post/"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
+import { useDispatch, useSelector } from "react-redux"
+import { logout, selectAccessToken } from "@/lib/features/authSlice"
+import { getApiUrl } from "@/utils/config"
 
 const steps = [
   { label: "Content Types", endpoint: "content-types", field: "content_types" },
@@ -20,14 +23,14 @@ const steps = [
 ]
 
 // Create a function to check if user has set preferences
-export const checkUserPreferences = async () => {
+export const checkUserPreferences = async (token) => {
   try {
     const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     }
 
-    const selectionRes = await axios.get("http://localhost:8000/api/user-preference-selections/mine/", { headers })
+    const selectionRes = await axios.get(getApiUrl("/api/user-preference-selections/mine/"), { headers })
 
     // Check if any selections exist for any step
     for (const step of steps.slice(0, 5)) {
@@ -40,32 +43,13 @@ export const checkUserPreferences = async () => {
     return false
   } catch (err) {
     console.warn("Preference check error:", err)
-
-    // Check if the error is due to token expiration
-    if (
-      err.response?.data?.code === "token_not_valid" ||
-      err.response?.data?.detail?.includes("token") ||
-      err.response?.status === 401
-    ) {
-      // Clear user data from localStorage
-      localStorage.removeItem("access_token")
-      localStorage.removeItem("refresh_token")
-      localStorage.removeItem("user")
-
-      // Show toast notification
-      toast.error("Your session has expired. Please log in again.")
-
-      // Force page reload to update UI state
-      setTimeout(() => {
-        window.location.reload()
-      }, 1500)
-    }
-
     return false
   }
 }
 
 export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
+  const dispatch = useDispatch()
+  const token = useSelector(selectAccessToken)
   const [currentStep, setCurrentStep] = useState(0)
   const [options, setOptions] = useState({})
   const [selections, setSelections] = useState({})
@@ -76,26 +60,14 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
   const [isEditMode, setIsEditMode] = useState(false)
 
   const getHeaders = () => ({
-    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   })
 
   const handleTokenExpiration = () => {
-    // Clear user data from localStorage
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    localStorage.removeItem("user")
-
-    // Show toast notification
+    dispatch(logout())
     toast.error("Your session has expired. Please log in again.")
-
-    // Close the preferences dialog
     onOpenChange(false)
-
-    // Force page reload to update UI state
-    setTimeout(() => {
-      window.location.reload()
-    }, 1500)
   }
 
   useEffect(() => {
@@ -110,12 +82,12 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
       const headers = getHeaders()
 
       // Fetch user preferences
-      const prefRes = await axios.get("http://localhost:8000/api/user-preferences/", { headers })
+      const prefRes = await axios.get(getApiUrl("/api/user-preferences/"), { headers })
       setFineTuneDescription(prefRes.data.fine_tune_description || "")
       setModifyPostCTA(prefRes.data.modify_post_cta || "")
 
       // Fetch user preference selections
-      const selectionRes = await axios.get("http://localhost:8000/api/user-preference-selections/mine/", { headers })
+      const selectionRes = await axios.get(getApiUrl("/api/user-preference-selections/mine/"), { headers })
 
       const initial = {}
       let hasSelections = false
@@ -163,7 +135,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
       if (options[endpoint]?.length > 0) return // Already loaded
 
       const headers = getHeaders()
-      const res = await axios.get(`http://localhost:8000/api/${endpoint}/`, { headers })
+      const res = await axios.get(getApiUrl(`/api/${endpoint}/`), { headers })
       setOptions((prev) => ({ ...prev, [endpoint]: res.data }))
     } catch (err) {
       console.error(`Failed loading ${endpoint}:`, err)
@@ -208,7 +180,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
       const headers = getHeaders()
 
       await axios.patch(
-        "http://localhost:8000/api/user-preferences/",
+        getApiUrl("/api/user-preferences/"),
         {
           fine_tune_description: fineTuneDescription,
           modify_post_cta: modifyPostCTA,
@@ -222,7 +194,7 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
         body[field] = selections[endpoint] || []
       })
 
-      await axios.put("http://localhost:8000/api/user-preference-selections/", body, { headers })
+      await axios.put(getApiUrl("/api/user-preference-selections/"), body, { headers })
       toast.success("Preferences saved successfully!")
       onOpenChange(false)
       if (onComplete) onComplete()

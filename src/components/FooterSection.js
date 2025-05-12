@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Copyright,
   ArrowRight,
@@ -13,6 +13,12 @@ import {
   ChevronUp,
 } from "lucide-react"
 import Link from "next/link"
+import { useSelector, useDispatch } from 'react-redux'
+import { selectCurrentUser, selectAccessToken } from '@/lib/features/authSlice'
+import { toast } from 'sonner'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { getApiUrl } from "@/utils/config"
 
 const footerLinks = {
   Tools: ["LinkedIn Post Generator", "Hashtag Recommender", "Engagement Booster"],
@@ -29,22 +35,64 @@ const socialLinks = [
 ]
 
 export default function FooterSection() {
-  const [email, setEmail] = useState("")
+  const dispatch = useDispatch()
+  const user = useSelector(selectCurrentUser)
+  const token = useSelector(selectAccessToken)
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const [expandedSection, setExpandedSection] = useState(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 640)
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault()
-    // Handle newsletter signup
-    alert(`Thanks for subscribing with ${email}!`)
-    setEmail("")
+    if (!newsletterEmail) {
+      toast.error("Please enter your email address")
+      return
+    }
+
+    try {
+      setLoading(true)
+      const response = await fetch(getApiUrl("/api/subscribe/"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify({ email: newsletterEmail }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to subscribe")
+      }
+
+      toast.success("Successfully subscribed to our newsletter!")
+      setNewsletterEmail("")
+    } catch (error) {
+      console.error("Error subscribing:", error)
+      toast.error("Failed to subscribe. Please try again.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const scrollToTop = () => {
-    // window.scrollTo({ top: 0, behavior: "smooth" })
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
   }
 
   return (
@@ -94,24 +142,24 @@ export default function FooterSection() {
               <p className="text-gray-400 mb-6">
                 Get the latest LinkedIn growth tips and strategies delivered to your inbox weekly.
               </p>
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-grow">
-                  <input
+                  <Input
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
                     placeholder="Enter your email"
                     className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-400"
                     required
                   />
                 </div>
-                <button
+                <Button
                   type="submit"
                   className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group"
+                  disabled={loading}
                 >
-                  Subscribe
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </button>
+                  {loading ? "Subscribing..." : "Subscribe"}
+                </Button>
               </form>
             </div>
           </div>
@@ -134,7 +182,7 @@ export default function FooterSection() {
               </button>
               <ul
                 className={`space-y-3 transition-all duration-300 overflow-hidden ${
-                  expandedSection === section || window.innerWidth >= 640
+                  expandedSection === section || !isMobile
                     ? "max-h-96 opacity-100"
                     : "max-h-0 opacity-0 sm:max-h-96 sm:opacity-100"
                 }`}
