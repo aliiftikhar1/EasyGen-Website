@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -39,6 +39,24 @@ export default function Header() {
   const [isLogoutLoading, setIsLogoutLoading] = useState(false)
   const dropdownRef = useRef(null)
 
+  const checkPreferencesOnLogin = useCallback(async () => {
+    try {
+      const hasPreferences = await checkUserPreferences(token)
+      if (!hasPreferences) {
+        // If user doesn't have preferences, show the preferences dialog
+        setShowPreferences(true)
+      }
+    } catch (error) {
+      console.error("Error checking preferences:", error)
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (token) {
+      checkPreferencesOnLogin()
+    }
+  }, [token, checkPreferencesOnLogin])
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -54,24 +72,6 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [dropdownOpen])
-
-  useEffect(() => {
-    if (token) {
-      checkPreferencesOnLogin()
-    }
-  }, [token, checkPreferencesOnLogin])
-
-  const checkPreferencesOnLogin = async () => {
-    try {
-      const hasPreferences = await checkUserPreferences(token)
-      if (!hasPreferences) {
-        // If user doesn't have preferences, show the preferences dialog
-        setShowPreferences(true)
-      }
-    } catch (error) {
-      console.error("Error checking preferences:", error)
-    }
-  }
 
   const handleTokenExpiration = () => {
     dispatch(logout())

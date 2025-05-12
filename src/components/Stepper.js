@@ -59,16 +59,16 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
   const [error, setError] = useState(null)
   const [isEditMode, setIsEditMode] = useState(false)
 
-  const getHeaders = () => ({
+  const getHeaders = useCallback(() => ({
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
-  })
+  }), [token])
 
-  const handleTokenExpiration = () => {
+  const handleTokenExpiration = useCallback(() => {
     dispatch(logout())
     toast.error("Your session has expired. Please log in again.")
     onOpenChange(false)
-  }
+  }, [dispatch, onOpenChange])
 
   const fetchPreferences = useCallback(async () => {
     try {

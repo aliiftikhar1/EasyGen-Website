@@ -73,12 +73,7 @@ export default function TestimonialSection() {
     scrollToIndex(currentIndex - 1)
   }
 
-  const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : maxIndex))
-    scrollToIndex(currentIndex + 1)
-  }, [currentIndex, maxIndex, scrollToIndex])
-
-  const scrollToIndex = (index) => {
+  const scrollToIndex = useCallback((index) => {
     if (carouselRef.current && index >= 0 && index <= maxIndex) {
       const scrollAmount = (carouselRef.current.scrollWidth / testimonials.length) * index
       carouselRef.current.scrollTo({
@@ -86,7 +81,12 @@ export default function TestimonialSection() {
         behavior: "smooth",
       })
     }
-  }
+  }, [maxIndex])
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : maxIndex))
+    scrollToIndex(currentIndex + 1)
+  }, [currentIndex, maxIndex, scrollToIndex])
 
   const handleDotClick = (index) => {
     setCurrentIndex(index)
