@@ -320,7 +320,7 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
                 Your Generated LinkedIn Post
               </DialogTitle>
               <DialogDescription>
-                Here's your AI-generated post based on the title: <span className="font-medium">{title}</span>
+                Here&apos;s your AI-generated post based on the title: <span className="font-medium">{title}</span>
               </DialogDescription>
             </DialogHeader>
 
@@ -372,7 +372,7 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
               </div>
             </div>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-600">
               Don&apos;t worry, you can always edit this later.
             </p>
           </>

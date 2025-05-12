@@ -70,7 +70,7 @@ export default function PostPreviewSection() {
                   LinkedIn posts in seconds.
                   <br />
                   <br />
-                  <span className="text-blue-600 font-bold">👉</span> Say goodbye to writer's block
+                  <span className="text-blue-600 font-bold">👉</span> Say goodbye to writer&apos;s block
                   <br />
                   <span className="text-blue-600 font-bold">💡</span> Create engaging, authentic content that connects
                   <br />
