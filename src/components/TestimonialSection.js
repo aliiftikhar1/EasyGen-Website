@@ -59,12 +59,6 @@ export default function TestimonialSection() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  // Auto-scroll functionality
-  useEffect(() => {
-    const interval = setInterval(handleNext, 5000)
-    return () => clearInterval(interval)
-  }, [handleNext])
-
   const itemsPerView = isMobile ? 1 : 3
   const maxIndex = Math.max(0, testimonials.length - itemsPerView)
 
@@ -87,6 +81,12 @@ export default function TestimonialSection() {
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : maxIndex))
     scrollToIndex(currentIndex + 1)
   }, [currentIndex, maxIndex, scrollToIndex])
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const interval = setInterval(handleNext, 5000)
+    return () => clearInterval(interval)
+  }, [handleNext])
 
   const handleDotClick = (index) => {
     setCurrentIndex(index)

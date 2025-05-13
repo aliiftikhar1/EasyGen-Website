@@ -1,5 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+// utils/config.js
+export const API_URL = 'https://easygen-backend.onrender.com';
 
-export const getApiUrl = (endpoint) => {
-  return `${API_URL}${endpoint}`
-} 
+export const getApiUrl = (endpoint) => `${API_URL}${endpoint}`;

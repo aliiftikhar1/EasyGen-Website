@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
 
+
+// next.config.js
+const nextConfig = {
+    env: {
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    },
+  };
+  
 export default nextConfig;
+  
