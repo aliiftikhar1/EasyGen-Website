@@ -12,6 +12,7 @@ import { toast } from "sonner"
 import { useDispatch, useSelector } from "react-redux"
 import { logout, selectAccessToken } from "@/lib/features/authSlice"
 import { getApiUrl } from "@/utils/config"
+import { isTokenError } from "@/utils/auth-utils"
 
 const steps = [
   { label: "Content Types", endpoint: "content-types", field: "content_types" },
@@ -98,12 +99,21 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
       if (isTokenError(error)) {
         handleTokenExpiration()
       }
+    } finally {
+      if (currentStep === 0) setIsLoading(false)
     }
-  }, [getHeaders, handleTokenExpiration])
+  }, [getHeaders, handleTokenExpiration, currentStep])
 
   useEffect(() => {
     fetchPreferences()
   }, [fetchPreferences])
+
+  // Load options for the first step when dialog opens
+  useEffect(() => {
+    if (open && currentStep === 0) {
+      loadOptionsForStep(0)
+    }
+  }, [open, currentStep])
 
   const loadOptionsForStep = async (stepIndex) => {
     const { endpoint } = steps[stepIndex]
@@ -112,7 +122,11 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
     if (endpoint === "custom") return
 
     try {
-      if (options[endpoint]?.length > 0) return // Already loaded
+      setIsLoading(true)
+      if (options[endpoint]?.length > 0) {
+        setIsLoading(false)
+        return // Already loaded
+      }
 
       const headers = getHeaders()
       const res = await axios.get(getApiUrl(`/api/${endpoint}/`), { headers })
@@ -131,6 +145,8 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
       }
 
       setError(`Could not load ${steps[stepIndex].label}`)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -147,8 +163,11 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
   const handleNext = async () => {
     const next = currentStep + 1
     setCurrentStep(next)
+    setIsLoading(true)
     if (next < steps.length && !options[steps[next]?.endpoint]) {
       await loadOptionsForStep(next)
+    } else {
+      setIsLoading(false)
     }
   }
 
@@ -291,8 +310,8 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
             </div>
 
             <div className="space-y-2  max-h-[300px] overflow-y-auto p-2 grid grid-cols-2 ">
-              {isLoading && currentStep === 0 ? (
-                <div className="flex justify-center py-8">
+              {isLoading ? (
+                <div className="flex justify-center items-center py-8 min-h-[120px]">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
               ) : items.length === 0 ? (
