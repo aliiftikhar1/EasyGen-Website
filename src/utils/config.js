@@ -3,5 +3,5 @@
 export const API_URL = "http://trylenoxinstruments.com"
 export const getApiUrl = (endpoint) => {
   console.log(API_URL)
-  return `${API_URL}${endpoint}/`
+  return `${API_URL}${endpoint}`
 } 
