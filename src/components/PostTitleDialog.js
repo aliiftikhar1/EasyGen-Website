@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useSelector } from "react-redux"
+import { selectAccessToken } from "@/lib/features/authSlice"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,6 +30,7 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
   const [isCopied, setIsCopied] = useState(false)
   const [isRegenerating, setIsRegenerating] = useState(false)
   const [step, setStep] = useState("title") // "title" or "post"
+  const token = useSelector(selectAccessToken)
 
   const handleGenerate = async () => {
     if (!title.trim()) {
@@ -37,7 +40,6 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
 
     try {
       setIsGenerating(true)
-      const token = localStorage.getItem("access_token")
 
       if (!token) {
         toast.error("Please log in to generate posts")
@@ -91,7 +93,6 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
   const handleRegeneratePost = async () => {
     try {
       setIsRegenerating(true)
-      const token = localStorage.getItem("access_token")
 
       if (!token) {
         toast.error("Please log in to generate posts")
@@ -152,7 +153,6 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
 
       // Here you would normally call your API to get new title suggestions
       // For now, we'll just shuffle the existing ones
-      const token = localStorage.getItem("access_token")
 
       if (!token) {
         toast.error("Please log in to generate suggestions")
@@ -371,10 +371,6 @@ export default function PostTitleDialog({ open, onOpenChange, onGenerate }) {
                 </Button>
               </div>
             </div>
-
-            <p className="text-gray-600">
-              Don&apos;t worry, you can always edit this later.
-            </p>
           </>
         )}
       </DialogContent>

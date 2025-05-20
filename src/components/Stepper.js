@@ -119,7 +119,10 @@ export default function PreferenceStepper({ open, onOpenChange, onComplete }) {
     const { endpoint } = steps[stepIndex]
 
     // Skip loading for the custom step
-    if (endpoint === "custom") return
+    if (endpoint === "custom") {
+      setIsLoading(false)
+      return
+    }
 
     try {
       setIsLoading(true)
